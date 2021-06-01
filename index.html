@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <title>ML4B-Quiz</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1 style="text-align: center;"> Quiz </h1>
+    <p style="text-align: center;">Here are 2 pictures, can you tell which one shows real grapes?</p>
+    <table style="width: 100%">
+        <tbody>
+            <tr>
+                <td style="text-align: right;"><img id="img_left" src="TOGENERATE.png" alt="left image" title="Image 1" height="128" width="128"></td>
+                <td style="text-align: left;"><img id="img_right" src="TOGENERATE.png" alt="right image" title="Image 2" height="128" width="128"></td>
+            </tr>
+            <tr>
+                <td style="text-align: right;"><button id="answer_left" class="button_answer" onclick="chooseLeft()">
+                        The left image! </button></td>
+                <td style="text-align: left;"><button id="answer_right" class="button_answer" onclick="chooseRight()">
+                        The right image! </button></td>
+            </tr>
+        </tbody>
+    </table>
+    <p style="text-align: center;">
+        <button class="button_control" onclick="regenerate()">Next question!</button><br>
+        <button class="button_control" onclick="cheat()">A hint please!</button><br>
+        <button class="button_control" onclick="showScore()">Show my score!</button>
+    </p>
+
+    <p style="text-align: center;">
+        Created by Albin Lokaj and Ferdinand Eckl. Please visit <a href="https://github.com/Ferdi-nand/ML4B-results">our GitHub repository</a> for more information about our project.
+    </p>
+
+
+
+    <script>
+        const button_left = document.getElementById("answer_left");
+        const button_right = document.getElementById("answer_right");
+        var correct_image; // 0 = left, 1 = right
+        var true_img_id, false_img_id, left_src, right_src;
+
+        var correct = 0,
+            wrong = 0;
+
+        regenerate();
+
+        function regenerate() {
+            colorReset();
+
+            correct_image = Math.floor(Math.random() * 2);
+            true_img_id = Math.floor(Math.random() * 1000) + 1;
+            false_img_id = Math.floor(Math.random() * 1000) + 1000;
+            if (correct_image == 0) {
+                left_src = "https://raw.githubusercontent.com/Ferdi-nand/ML4B-results/main/extracted/" + true_img_id + ".jpg";
+                right_src = "https://raw.githubusercontent.com/Ferdi-nand/ML4B-results/main/generated/seed" + false_img_id + ".png";
+            } else {
+                left_src = "https://raw.githubusercontent.com/Ferdi-nand/ML4B-results/main/generated/seed" + false_img_id + ".png";
+                right_src = "https://raw.githubusercontent.com/Ferdi-nand/ML4B-results/main/extracted/" + true_img_id + ".jpg";
+            }
+            img_left.setAttribute("src", left_src);
+            img_right.setAttribute("src", right_src);
+        }
+
+        function colorChange() {
+            if (correct_image == 0) {
+                button_left.className = "button_correct";
+                button_right.className = "button_wrong";
+            } else {
+                button_left.className = "button_wrong";
+                button_right.className = "button_correct";
+            }
+        }
+
+        function colorReset() {
+            button_left.className = "button_answer";
+            button_right.className = "button_answer";
+        }
+
+        function chooseLeft() {
+            colorChange();
+            if (correct_image == 0) {
+                correct++;
+                console.log("Good guess! Your answer is correct. So far: Correct: " + correct + "; wrong: " + wrong);
+            } else {
+                wrong++;
+                console.log("Sorry, wour answer was wrong. So far: Correct: " + correct + "; wrong: " + wrong);
+            }
+        }
+
+        function chooseRight() {
+            colorChange();
+            if (correct_image == 1) {
+                correct++;
+                console.log("Good guess! Your answer is correct. So far: Correct: " + correct + "; wrong: " + wrong);
+            } else {
+                wrong++;
+                console.log("Sorry, wour answer was wrong. So far: Correct: " + correct + "; wrong: " + wrong);
+            }
+        }
+
+        function cheat() {
+            setTimeout(colorReset, 250); // runs after 250 miliseconds
+            colorChange(); // executed instantly
+        }
+
+        function showScore() {
+            var msg = "You have " + correct + " correct guess" + (correct != 1 ? "es" : "") + " and " + wrong + " wrong guess" + (wrong != 1 ? "es" : "") + "!";
+            alert(msg);
+        }
+    </script>
+</body>
+
+</html>
