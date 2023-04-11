@@ -27,17 +27,14 @@
         </tbody>
     </table>
     <p style="text-align: center;">
-        <button class="button_control" onclick="regenerate()">Next question!</button><br>
+        <button class="button_control" onclick="regenerate()">Skip this question!</button><br>
         <button class="button_control" onclick="colorChange(250, false)">A hint please!</button><br>
-        <button class="button_control" onclick="showScore()">Show my score!</button>
+    <p style="text-align: center;" id="score">Start the quiz by making your first guess!</p>
     </p>
 
     <p style="text-align: center;">
-        Created by Albin Lokaj and Ferdinand Eckl. Please visit <a href="https://github.com/Ferdi-nand/ML4B-results">our
-            GitHub repository</a> for more information about our project.
+        Created by Albin Lokaj and Ferdinand Eckl. Please visit <a href="https://github.com/Ferdi-nand/ML4B-results">our GitHub repository</a> for more information about our project.
     </p>
-
-
 
     <script>
         const button_left = document.getElementById("answer_left");
@@ -110,6 +107,7 @@
                 wrong++;
                 console.log("Sorry, wour answer was wrong. So far: Correct: " + correct + "; wrong: " + wrong);
             }
+            updateScore();
         }
 
         function chooseRight() {
@@ -121,11 +119,13 @@
                 wrong++;
                 console.log("Sorry, wour answer was wrong. So far: Correct: " + correct + "; wrong: " + wrong);
             }
+            updateScore();
         }
 
-        function showScore() {
-            var msg = "You have " + correct + " correct guess" + (correct != 1 ? "es" : "") + " and " + wrong + " wrong guess" + (wrong != 1 ? "es" : "") + "!";
-            alert(msg);
+        function updateScore() {
+            var percentage = Math.round((correct / (correct + wrong)) * 100);
+            var scoreParagraph = document.getElementById("score");
+            scoreParagraph.textContent = "You have " + correct + " correct guess" + (correct != 1 ? "es" : "") + " and " + wrong + " wrong guess" + (wrong != 1 ? "es" : "") + "! You have recognized the correct image in " + percentage + "% of all cases so far.";
         }
     </script>
 </body>
